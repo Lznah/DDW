@@ -1,1 +1,78 @@
-= HW1 - TBD!
+= Task 1: Sreality Real Estate Agencies Crawler
+
+Sreality is by far the biggest estate advertising portal in the Czech Republic. All major estate agencies advertise on this portal.
+
+The portal offers a list of all estate agecies that advertise there, which can get interesting information over time, such as development of advertised estates for each agency, number of estate agents in each agency. Also, all these information can be distinguased by separate agency branches.
+
+== Differencies to original task
+In the original task, we should have used crawler like Scrapy library to load statically loaded websites. However, a content of Sreality is dynamically loaded and Scrapy would not work for this website. I used Selenium, that allows to run browser, which runs JavaScript and renders the dynamic content. This solves some issues that I had to face if I used Scrapy, but brighs new issues too, which I discuss in <<issues,Issues section>>.
+
+== Crawling
+This robot crawls 3 different type of pages.
+
+a. AdresarPage - list of estate agencies
+b. BranchesPage - list of braches of an agency
+c. AgentsPage - list of agents of an branch
+
+Each type of page uses pagination and the robot deals with that.
+
+*Flow:* 
+
+. At first, the first list of estate agencies (AdresarPage) is put in the stack and instantly popped out, to be loaded in Selenium, which from new links of agencies (BranchesPage) are put in the stack. Due to pagination, other pages are also put in.
+
+. When the BranchesPage instance is processed and list of branches scraped, links of agents list (AgentsPage), that has some estate advertised, are put in the stack. As it was done for list of agencies, list of branches is also paginaized. Therefore, these pages are also put into stack as well.
+
+. Crawl of AgentsPages is similar to crawl of BranchesPage. However, this feature is not implemented yet, because scraping of information about agents is also not implemented yet.
+
+== Scraping
+Website is crawled in 3 different ways, as it is described above. Then, information are extracted differently for each type of page.
+
+a. AdresarPage:
+    * Number of pages
+    * Link to subpage of estate agency
+    * Estate agency ID
+    * Name
+    * Address
+    * Number of advertised estates for whole Estate Agency
+
+b. BranchesPage:
+    * Number of pages
+    * Number of advertised estates for the headquaters of the agency
+    * List of branches with:
+    ** Name
+    ** Address
+    ** Number of advertised estates for the branch
+    
+c. AgencyPage (not implemented yet):
+    * Number of pages
+    * List of estate agents and each has his name
+
+
+[#issues]
+== Issues
+Unlike for Scrapy, I did not have to deal with User-Agents, because Chrome driver uses its own.
+Also, I did not deal with robots policies, because my task is not to blindly walk throught the website, but to follow defined pattern. 
+
+The main issue is that Sreality is dynamically loaded website. Therefore, I could not use libraries for webscraping like Scrapy. The robot runs Chrome browser in headless environment, which renders website and allows to do actions via script.
+
+During the programming I have notices that the robot randomly threw an NoSuchElementException. The problem was that robot were trying to access element that was not rendered already. I solved it by adding an implicit wait for every element to occur.
+
+Other problem, that I had to deal with, was the slowness of the headless browser, which has to load much more data than just HTML, and rendering tooks some time as well. To prevent unnecessary page loadings I managed processes to reduce the total sum of loaded pages. Those are:
+
+. *Limit crawling to first few pages in the list of all estate agencies.* Other estate agencies are not interesting for us. This could be turned of easily.
+
+. *Crawl only list of agencies, not informational site.* All necessary information are accesible from this site too.
+
+. *Crawn only agents list of branches that has some advertised estates.* Those sites does not provide interesting features.
+
+Another problem was with a different structure of agencies subpages. Some of them has their headquaters (their main branch) as a single page and they use it for advertising. Some agencies advertise only through their branches. Some does not have branches at all.
+
+## Future work
+I will implement connection to MongoDB, where I will store the given data in JSON every day. Also, I will implement web user interface that will be showing interesting features and relations over time.
+
+## Requirements
+* Python3
+* Selenium package
+
+## How to run
+    $:/ python3 run.py
