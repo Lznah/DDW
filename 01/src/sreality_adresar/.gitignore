@@ -1,0 +1,10 @@
+bin
+lib
+include
+scrape.log
+myfile.txt
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+__pycache__
+*.json
