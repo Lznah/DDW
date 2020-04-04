@@ -1,1 +1,4 @@
-= HW2 - TBD!
+= Task 2: Text Mining 
+
+== Issues
+. I was not sure about the Regular Expression for ntlk parser. I tested different expressions and left the one, which gave the most retrieval.
