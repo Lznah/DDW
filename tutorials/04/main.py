@@ -20,6 +20,7 @@ def createH(inputFile):
                 outlinks_cnt = int(split[1])
                 H[x,y] = outlinks_cnt/len(elems)
             x=x+1
+    print("H:\n{}\n".format(H))
     return(H)
 
 def createS(H):
@@ -27,6 +28,7 @@ def createS(H):
     for i, row in enumerate(S):
         if row.sum() == 0:
             S[i] = np.full(len(row),1/len(row))
+    print("S:\n{}\n".format(S))
     return(S)
 
 def createG(S,alpha):
@@ -55,10 +57,15 @@ if __name__ == '__main__':
     alpha = 0.85
     iterations = 16
     H = createH(inputFile)
-    # print(computePR(H, iterations))
+    print("Pagerank(H):")
+    print(computePR(H, iterations))
+    print('\n'+("#"*30)+'\n')
 
     S = createS(H)
-    # print(computePR(S, iterations))
+    print("Pagerank(S):")
+    print(computePR(S, iterations))
 
+    print('\n'+("#"*30)+'\n')
     G = createG(S,alpha)
+    print("Pagerank(G):")
     print(computePR(G, iterations))
