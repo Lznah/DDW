@@ -1,1 +1,13 @@
-= HW3 - TBD!
+= Task 3
+
+# Visualizations:
+
+## green.png and community_greenone.png
+It shows that there is a big community, colored in green color. Other are too little with coverage usually around 0.2 % out of all nodes. Maybe if I chose different communities recognition algorithm, I would get better results. Now it looks like it shows only communities of a single movie.
+
+## Issues:
+The biggest issue was Gephi. I literally don't know how to use it and I was not able to find funcionalities for better visualizations. Also, graphs very to big to be generated via graphviz and I was surprised how much time it took, to render a graph from 16K nodes.
+I had another issue during the import with datatypes, which can be seen in results/warning.png.
+
+## Future work:
+Definitely better visualizations.
