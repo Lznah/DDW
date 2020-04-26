@@ -40,10 +40,9 @@ def createG(S,alpha):
 
 def computePR(M, iterations):
     size = M.shape[0]
-    # pagerank = np.zeros(size)
-    # pagerank[0] = 1
+    pagerank = np.zeros(size)
+    pagerank[0] = 1
 
-    pagerank = np.full(size, 1)
     for i in range(iterations):
         pagerank = pagerank.transpose() @ M
 
