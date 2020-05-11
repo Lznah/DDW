@@ -1,0 +1,58 @@
+
+== Tasks
+
+
+==== Implementation
+
+
+* Complete the implementation about the generation of association rules
+* Allow setting of minimum confidence value for each rule
+** the output can be printed to the console
+*** provide information about antecedent, consequent, support and confidence of the rule
+*** e.g. {a=1,b=2} –> {c=3}, support=0.5, confidence=0.3
+*** optionally allow sorting by support, confidence, or rule length
+* Implement other metric of your choice (https://en.wikipedia.org/wiki/Association_rule_learning)
+** stem:[lift(X \rightarrow Y ) = \frac{support(X \cup Y)}{support(X) \times support(Y)}]
+** stem:[conviction(X \rightarrow Y ) = \frac{1-support(Y)}{1-confidence(X \rightarrow Y)}]
+
+
+==== Data Analysis
+
+
+* Perform association rules mining on the example dataset containing bank data.
+** link:{imagesdir}/bank-data.zip[bank-data.zip]
+* Experiment with different settings of metrics (confidence, optionally lift and conviction). Which settings and metric works best for your use case.
+* Try another dataset from UCI repository
+** e.g. subset of datasets in CSV http://repository.seasr.org/Datasets/UCI/csv/
+** https://github.com/mikeizbicki/datasets/tree/master/csv/uci
+** https://github.com/selva86/datasets
+
+
+==== Code Example
+
+
+[source,python]
+----
+def genereateRules(frequentItemsets, supports, minConfidence):
+    ...
+    print(" .... ")
+
+# bank dataset preprocessing
+import pandas as pd
+df = pd.read_csv("./bank-data.csv")
+del df["id"]
+df["income"] = pd.cut(df["income"],10)
+dataset = []
+for index, row in df.iterrows():
+    row = [col+"="+str(row[col]) for col in list(df)]
+    dataset.append(row)
+frequentItemsets, supports = apriori(dataset, 0.3)
+genereateRules(frequentItemsets, supports, 0.5)
+
+# ...
+# {'car=YES'} => married=YES, 0.3233333333333333, 0.6554054054054054
+# ...
+# {'married=YES', 'save_act=YES'} => current_act=YES, 0.3433333333333333, 0.7436823104693141
+# ...
+
+----
